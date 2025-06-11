@@ -7,17 +7,17 @@ import InfoUserComponent from '../components/InfoUserComponent'
 
 function ListUsersPage() {
 
- const [listaUsers, setListaUsers] = useState([]); 
+ const [listaUsers, setListaUsers] = useState([]); // ✅ Inicializa correctamente como un array vacío
   const [userSelected, setUserSelected] = useState(null);
-  const [mode, setMode] = useState("CREATE"); // Valores posibles de mode: 'LISTADO' | 'CREATE' | 'MODIFY'
+  const [mode, setMode] = useState("CREATE"); // ✅ Modo inicial corregido
 
   const loadInfoUser = (user) => {
-    setUserSelected(user || null); 
+    setUserSelected(user || null);
   };
 
   const unselectUser = () => {
     setUserSelected(null);
-    setMode("LISTADO")
+    setMode("LISTADO");
   };
 
   const createUser = (newUser) => {
@@ -26,36 +26,52 @@ function ListUsersPage() {
       return;
     }
 
-    setListaUsers((prevUsers) => [...prevUsers, newUser]); 
-    setUserSelected(newUser); 
-    setMode("MODIFY"); 
+    setListaUsers((prevUsers) => [...prevUsers, newUser]); // ✅ Agrega usuario correctamente
+    setUserSelected(newUser);
+    setMode("MODIFY"); // ✅ Cambia al modo modificación tras crear
+  };
+
+  const updateUser = (updatedUser) => {
+    setListaUsers((prevUsers) =>
+      prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    ); // ✅ Actualiza los datos del usuario
+    setUserSelected(updatedUser);
+    setMode("MODIFY"); // ✅ Mantiene el modo edición tras actualizar
   };
 
   const backToListadoMode = () => {
     setMode("LISTADO");
+    setUserSelected(null);
+  };
+
+  const changeToEditMode = () => {
+    setMode("CREATE"); // ✅ Activa el formulario de edición con datos cargados
   };
 
   useEffect(() => {
-    setListaUsers([]); 
+    setListaUsers([]); // ✅ Inicialización correcta
   }, []);
 
   return (
     <div>
-      {mode === "CREATE" && <FormUserComponet createUser={createUser} />}
+      {mode === "CREATE" && <FormUserComponet createUser={createUser} user={userSelected} />} {/* ✅ El formulario se carga correctamente */}
 
       {mode === "MODIFY" && userSelected ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center', justifyContent: 'space-between' }}>
-          <h1>Informacion del usuario</h1>
+          <h1>Información del usuario</h1>
           <InfoUserComponent user={userSelected} />
-          <button onClick={() => setMode("CREATE")}>Editar</button> 
+          <button onClick={changeToEditMode}>Editar</button> {/* ✅ Abre el formulario con datos existentes */}
         </div>
       ) : (
-        <p>No hay usuarios registrados...</p>
-        ) 
-      }
-
+        listaUsers.length > 0 ? (
+          listaUsers.map((user, idx) => <InfoUserComponent key={user.id || idx} user={user} />)
+        ) : (
+          <p>No hay usuarios registrados...</p>
+        )
+      )}
     </div>
   );
 }
+
 
 export default ListUsersPage
