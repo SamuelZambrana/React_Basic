@@ -4,8 +4,8 @@ import MenuComponent from '../components/common/MenuComponent'
 const ContactPage = () => {
   return (
     <div>
-      <MenuComponent />
-      <h1>Contact Page</h1>
+        <MenuComponent />
+        ContactPage
     </div>
   )
 }

@@ -1,0 +1,24 @@
+.custom-nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: #010b16;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.nav-link-custom {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff !important;
+}
+
+.nav-link-custom:hover {
+  background-color: #007bff;
+  color: white !important;
+}
+
+.disabled-link {
+  color: gray !important;
+  cursor: not-allowed;
+}
